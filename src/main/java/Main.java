@@ -174,6 +174,30 @@ public class Main {
         empleados2000.forEach(empleado -> System.out.println(empleado.getNombre() + " - $" + empleado.getSalario()));
 
         System.out.println("\nSalario promedio");
+        Double salarioProm = empleados.stream().
+                map(Empleado::getSalario).
+                reduce(0D,(a,b) -> a + b)/empleados.size();
+        System.out.println(salarioProm);
+
+        System.out.println("\nEmpleados por departamento");
+        Map<Departamento,List<Empleado>> empDepto = empleados.stream().
+                collect(Collectors.groupingBy(Empleado::getDepartamento));
+
+        empDepto.forEach((depto,empleado) -> {
+            System.out.println(depto.getNombre());
+            System.out.println("$"+empleado.stream().
+                    map(Empleado::getSalario).
+                    reduce(0D,(a,b) -> a + b));
+        });
+
+        System.out.println("\nEmpleado mas jovenes");
+        List<Empleado> empJovenes = empleados.stream().
+                sorted(Comparator.comparing(Empleado::getEdad)).
+                limit(2).
+                toList();
+
+        empJovenes.forEach(empleado -> System.out.println(empleado.getNombre()+" - edad: "+empleado.getEdad()));
+
 
 
 
